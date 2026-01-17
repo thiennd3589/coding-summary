@@ -14,7 +14,7 @@
 ***Bật `ufw`***
 
 ```bash
-sudo ufw allow OpenSSH #Bật ssh phòng trường hợp bị ngắt session
+sudo ufw allow in from 10.0.0.0/8 to any port 22 proto tcp #Bật ssh phòng trường hợp bị ngắt session. Chỉ cho phép ssh mạng nội bộ
 sudo ufw enable
 ```
 
@@ -27,6 +27,10 @@ sudo ufw default deny outgoing
 # Chặn kết nối đến IP nghi ngờ là của hacker
 ufw deny out to HACKER_IP
 ufw deny in  from HACKER_IP
+
+# Mở port cần thiết cho các server khác gọi đến
+sudo ufw allow in from 10.0.0.0/8 to any port <PORT> proto tcp
+...
 
 #Chỉ open khi thực sự cần thiết. Cho phép kết nối tcp qua 443. 
 ufw allow out 443/tcp
