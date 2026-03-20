@@ -1,3 +1,3 @@
 # Linux command
 
-## [User](/linux/user.md)
+## [User](user.md)

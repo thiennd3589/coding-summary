@@ -1,2 +1,2 @@
 # Cấu hình MongoDB
-## [Replica Set](/mongo/index.md)
+## [Replica Set](install-replica.md)
