@@ -1,6 +1,6 @@
 # Default nginx.conf
 
-```
+```nginx
 user nginx;
 worker_processes auto;
 
@@ -10,7 +10,7 @@ pid        /run/nginx.pid;
 worker_rlimit_nofile 200000;
 
 events {
-  worker_connections  49152;
+  worker_connections 49152;
   multi_accept on;
 }
 
@@ -23,11 +23,11 @@ http {
                   '"$http_user_agent" "$http_x_forwarded_for"'
                   '$upstream_addr ';
 
-  access_log  /var/log/nginx/access.log  main;
-  sendfile        on;
-  tcp_nopush     on;
+  access_log /var/log/nginx/access.log  main;
+  sendfile on;
+  tcp_nopush on;
   tcp_nodelay on;
-  keepalive_timeout  65;
+  keepalive_timeout 65;
   keepalive_requests 100000;
   gzip on;
   gzip_types *;
