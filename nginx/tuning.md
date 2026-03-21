@@ -64,7 +64,21 @@ events {
 }
 ```
 
-## 5. Kiểm tra lại sau khi apply
+## 5. Tuning OS
+
+Sửa file ```/etc/sysctl.conf```
+```
+net.ipv4.tcp_max_syn_backlog = 65535
+net.ipv4.ip_local_port_range = 1024 65535
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_fin_timeout = 10
+net.core.somaxconn = 65535
+net.ipv4.tcp_timestamps=1 
+net.ipv4.tcp_tw_recycle=0
+net.ipv4.tcp_max_tw_buckets=10000
+```
+
+## 6. Kiểm tra lại sau khi apply
 ```
 cat /proc/$(pidof nginx | awk '{print $1}')/limits | grep "Max open files"
 ```
