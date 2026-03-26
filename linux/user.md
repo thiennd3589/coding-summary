@@ -1,8 +1,12 @@
 # Các lệnh hữu ích liên quan đến user
 
-### Tạo user
+## Tạo user
 
 `sudo adduser <username>`
+
+## Set mật khẩu
+
+`sudo passwd <username>`
 
 ### Cấp quyền root
 
