@@ -18,8 +18,7 @@ upstream api_servers {
 }
 
 server {
-  server_name example.com;
-  # server_name .example.com Trong trường hợp muốn handle tất cả subdomain
+  server_name example.com; # server_name .example.com Trong trường hợp muốn handle tất cả subdomain
 
   large_client_header_buffers 8 32k;
 
@@ -36,7 +35,6 @@ server {
  
   }
 
-
   location /api/v1 {
     proxy_http_version 1.1;
     proxy_set_header Connection "";
@@ -45,9 +43,21 @@ server {
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_pass http://api_servers;
-      }
+  }
 
-location /socket.io {
+  # This helps cloudflare can serve static file without cors
+  location ^~ /_next/static/ {
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host $host;
+
+    proxy_pass http://frontend_servers;
+
+    add_header Access-Control-Allow-Origin "*" always;
+    add_header Cross-Origin-Resource-Policy "cross-origin" always;
+  }
+
+  location /socket.io {
     client_max_body_size 10M;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
@@ -56,15 +66,15 @@ location /socket.io {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto https;
     proxy_pass http://api_servers;
-      proxy_redirect off;
+    proxy_redirect off;
   }
    
-    listen 443 ssl; # managed by Certbot
+  listen 443 ssl; # managed by Certbot
 
-    ssl_certificate path-fullchain.pem; 
-    ssl_certificate_key path.private.pem;
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+  ssl_certificate path-fullchain.pem; 
+  ssl_certificate_key path.private.pem;
+  include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 }
 
 server {
